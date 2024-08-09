@@ -8,7 +8,7 @@ const PrincipleSchema = new mongoose.Schema(
       unique: true,
     },
     Email: {
-      type: Email,
+      type: String,
       required: [true, "Provide Principle Email"],
       unique: true,
     },

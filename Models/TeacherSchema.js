@@ -8,7 +8,7 @@ const TeacherSchema = new mongoose.Schema(
       unique: true,
     },
     Email: {
-      type: Email,
+      type: String,
       required: [true, "Provide Principle Email"],
       unique: true,
     },
@@ -16,11 +16,7 @@ const TeacherSchema = new mongoose.Schema(
       type: String,
       required: [true, "Provide Password"],
     },
-    Classroom: {
-      type: String,
-      required: [true, "Provide ClassRomm"],
-      unique: true,
-    },
+    ClassroomId: []
   },
   {
     timestamps: true,

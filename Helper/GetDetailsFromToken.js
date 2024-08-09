@@ -12,8 +12,8 @@ const getDetailsPrincipleFromToken = async (token) => {
     };
   }
 
-  const decode = await jwt.verify(token, process.env.JWT_SECREAT_KEY);
-  const Principle = await PrncipleSchema.findById(decode.id);
+  const decode = await jwt.verify(token, process.env.JWT_SECRET_KEY);
+  const Principle = await PrncipleSchema.findById(decode.id).select('-Password');
 
   return Principle;
 };
@@ -27,8 +27,8 @@ const getDetailsStudentFromToken = async (token) => {
     };
   }
 
-  const decode = await jwt.verify(token, process.env.JWT_SECREAT_KEY);
-  const Student = await StudentSchema.findById(decode.id);
+  const decode = await jwt.verify(token, process.env.JWT_SECRET_KEY);
+  const Student = await StudentSchema.findById(decode.id).select('-Password');
 
   return Student;
 };
@@ -42,8 +42,8 @@ const getDetailsTeacherFromToken = async (token) => {
     };
   }
 
-  const decode = await jwt.verify(token, process.env.JWT_SECREAT_KEY);
-  const Teacher = await TeacherSchema.findById(decode.id);
+  const decode = await jwt.verify(token, process.env.JWT_SECRET_KEY);
+  const Teacher = await TeacherSchema.findById(decode.id).select('-Password');
 
   return Teacher;
 };

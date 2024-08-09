@@ -6,9 +6,9 @@ require("dotenv").config();
 const LoginTeacher = async (req, res) => {
   try {
     const { Email, Password } = req.body;
-
+    
     const Principle = await PrincipleSchema.findOne({ Email });
-
+    
     if (!Principle) {
       return res.status(404).json({
         message: "Teacher not found. Please check your email.",
@@ -17,6 +17,7 @@ const LoginTeacher = async (req, res) => {
     }
 
     const verifyPassword = await bcryptjs.compare(Password, Principle.Password);
+
 
     if (!verifyPassword) {
       return res.status(400).json({
@@ -35,11 +36,15 @@ const LoginTeacher = async (req, res) => {
     });
 
     // Cookie options for proper handling in production
+    // const cookieOptions = {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   sameSite: "None",
+    //   maxAge: 24 * 60 * 60 * 1000, // 1 day
+    // };
     const cookieOptions = {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "None",
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
+      http: true,
+      secure: true
     };
 
     return res.cookie("token", token, cookieOptions).status(200).json({

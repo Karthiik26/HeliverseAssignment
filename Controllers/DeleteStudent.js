@@ -4,7 +4,7 @@ const DeleteStudent = async (req, res) => {
   try {
     const { StudentId } = req.body;
 
-    const UpdateStudent = await StudentSchema.findByIdAndDelete(studentId);
+    const UpdateStudent = await StudentSchema.findByIdAndDelete(StudentId);
 
     if (UpdateStudent) {
       return res.status(200).json({
@@ -20,4 +20,4 @@ const DeleteStudent = async (req, res) => {
   }
 };
 
-module.exports = EditStudent;
+module.exports = DeleteStudent;

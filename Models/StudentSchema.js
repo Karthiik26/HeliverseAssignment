@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const TeacherSchema = new mongoose.Schema(
+const StudentSchema = new mongoose.Schema(
   {
     Name: {
       type: String,
@@ -8,7 +8,7 @@ const TeacherSchema = new mongoose.Schema(
       unique: true,
     },
     Email: {
-      type: Email,
+      type: String,
       required: [true, "Provide Principle Email"],
       unique: true,
     },
@@ -23,13 +23,14 @@ const TeacherSchema = new mongoose.Schema(
     Age: {
       type: Number,
       required: [true, "Provide Age"],
-    }
+    },
+    ClassroomId: [],
   },
   {
     timestamps: true,
   }
 );
 
-const Teacher = mongoose.model("Teacher", TeacherSchema);
+const Student = mongoose.model("Student", StudentSchema);
 
-module.exports = Teacher;
+module.exports = Student;
