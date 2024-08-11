@@ -3,7 +3,16 @@ const bcryptjs = require("bcryptjs");
 
 const RegisterTeacher = async (req, res) => {
   try {
-    const { Name, Email, Password} = req.body;
+    const { Name, Email, Password } = req.body;
+
+    const existingTeacher = await Teacher.findOne({ Email });
+    if (existingTeacher) {
+      return res.status(400).json({
+        message:
+          "Email already exists. Please use a Diffrent & Use The Unique Name",
+        success: false,
+      });
+    }
 
     const Slat = await bcryptjs.genSalt(10);
     const HashPassword = await bcryptjs.hash(Password, Slat);
@@ -11,7 +20,7 @@ const RegisterTeacher = async (req, res) => {
     const Payload = {
       Name,
       Email,
-      Password: HashPassword
+      Password: HashPassword,
     };
 
     const TeacherSave = new Teacher(Payload);

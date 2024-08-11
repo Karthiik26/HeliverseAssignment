@@ -28,6 +28,7 @@ const getDetailsStudentFromToken = async (token) => {
   }
 
   const decode = await jwt.verify(token, process.env.JWT_SECRET_KEY);
+  console.log(decode)
   const Student = await StudentSchema.findById(decode.id).select('-Password');
 
   return Student;

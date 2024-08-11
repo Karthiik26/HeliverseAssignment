@@ -2,7 +2,7 @@ const TeachersSchema = require("../Models/TeacherSchema");
 
 const GettingAllTeachersData = async (req, res) => {
   try {
-    const AllTeachers = await TeachersSchema.find();
+    const AllTeachers = await TeachersSchema.find().select("-Password");
     return res.status(201).json({
       message: "Geting All Teachers Succesfully",
       data: AllTeachers,

@@ -1,5 +1,36 @@
 const mongoose = require("mongoose");
 
+const Lectures = new mongoose.Schema({
+  startTime: {
+    type: String,
+    required: true,
+  },
+  endTime: {
+    type: String,
+    required: true,
+  },
+  Subject: {
+    type: String,
+    required: true,
+  }
+});
+
+const ScheduleSchema = new mongoose.Schema({
+  startTime: {
+    type: String,
+    required: true,
+  },
+  endTime: {
+    type: String,
+    required: true,
+  },
+  date: {
+    type: String,
+    required: true,
+  },
+  Lectures : [Lectures]
+});
+
 const ClassRoomSchema = new mongoose.Schema(
   {
     Name: {
@@ -7,24 +38,18 @@ const ClassRoomSchema = new mongoose.Schema(
       required: [true, "Provide ClassRoom Name"],
       unique: true,
     },
-    StartTime: {
-      type: String,
-      required: [true, "Provide Start Time"],
+    ClassRoomSchedule: [ScheduleSchema],
+    Teacher: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Teacher",
+      required: true,
     },
-    EndTime: {
-      type: String,
-      required: [true, "Provide End Time"],
-    },
-    Date: {
-      type: String,
-      required: [true, "Provide Date"],
-    },
-    Day: {
-      type: String,
-      required: [true, "Provide Day"],
-    },
-    TeacherId: [],
-    Students: [],
+    Students: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Student",
+      },
+    ],
   },
   {
     timestamps: true,

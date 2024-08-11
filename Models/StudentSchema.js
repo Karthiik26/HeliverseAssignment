@@ -17,8 +17,9 @@ const StudentSchema = new mongoose.Schema(
       required: [true, "Provide Password"],
     },
     Rollno: {
-      type: String,
+      type: Number,
       required: [true, "Provide Roll No"],
+      unique: true,
     },
     Age: {
       type: Number,

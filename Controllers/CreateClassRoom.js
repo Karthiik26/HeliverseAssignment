@@ -1,28 +1,43 @@
-const ClassRoom = require("../Models/ClassRoomSchema");
+const ClassRoomSchema = require('../Models/ClassRoomSchema')
 
 const CreateClassRoom = async (req, res) => {
   try {
-    const { Name, StartTime, EndTime, Date, Day } = req.body;
+    const { ClassRoomName, TeacherName } = req.body;
 
-    const Payload = {
-      Name,
-      StartTime,
-      EndTime,
-      Date,
-      Day,
-    };
+    console.log(ClassRoomName)
+    console.log(TeacherName)
 
-    const ClassRoomSave = new ClassRoom(Payload);
-    const Save = await ClassRoomSave.save();
+    if (!ClassRoomName || !TeacherName) {
+      return res.status(400).json({
+        message: "Please provide valid ClassRoomName and TeacherName.",
+        error: true,
+      });
+    }
+
+    const existingClassRoom = await ClassRoomSchema.findOne({ TeacherName });
+    if (existingClassRoom) {
+      return res.status(400).json({
+        message: `Teacher ${TeacherName} is already assigned to the class '${existingClassRoom.ClassRoomName}'.`,
+        error: true,
+      });
+    }
+
+    const newClassRoom = new ClassRoomSchema({
+      Name : ClassRoomName,
+      Teacher : TeacherName,
+    });
+
+    const savedClassRoom = await newClassRoom.save();
 
     return res.status(201).json({
-      message: "Created ClassRom Succesfully",
-      data: Save,
+      message: "Classroom created successfully.",
+      data: savedClassRoom,
       success: true,
     });
   } catch (error) {
     return res.status(500).json({
-      message: error.message || error,
+      message: "Duplicate Error Change Name.",
+      errorlog : error,
       error: true,
     });
   }

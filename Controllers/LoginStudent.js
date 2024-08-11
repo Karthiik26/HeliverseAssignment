@@ -35,11 +35,16 @@ const LoginStudent = async (req, res) => {
     });
 
     // Cookie options for proper handling in production
+    // const cookieOptions = {
+    //   httpOnly: true,
+    //   secure: process.env.NODE_ENV === "production",
+    //   sameSite: "None",
+    //   maxAge: 24 * 60 * 60 * 1000, // 1 day
+    // };
+
     const cookieOptions = {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "None",
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
+      http: true,
+      secure: true
     };
 
     return res.cookie("token", token, cookieOptions).status(200).json({
