@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import TeacherLogin from "./Teacher/Login";
 import StudentLogin from "./Student/Login";
+import { useNavigate } from "react-router-dom";
 
 const Mainentry = () => {
   const [SelectLogin, setSelectLogin] = useState("Select One");
@@ -12,9 +13,13 @@ const Mainentry = () => {
     setSelectLogin(data);
   };
 
+  const nav = useNavigate();
+
   console.log(SelectLogin);
 
-  
+  const toprincipal = () => {
+    nav("/v18/PrincipleLogin");
+  };
 
   return (
     <>
@@ -22,6 +27,14 @@ const Mainentry = () => {
         <div className="mr-32">Welcome To Our School</div>
         {/* <div className="flex justify-center items-center m-20"> */}
         <div className="flex flex-col justify-center items-center ml-32 ">
+          <div className="py-8">
+            <button
+              onClick={toprincipal}
+              className="px-5 py-3 bg-red-400 text-black font-bold text-lg"
+            >
+              Principal
+            </button>
+          </div>
           <div>
             <label for="underline_select" class="sr-only">
               Underline select
