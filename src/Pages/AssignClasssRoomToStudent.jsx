@@ -64,7 +64,6 @@ const AssignClasssRoomToStudent = () => {
   const [AddLectures, setAddLectures] = useState(false);
   const [TeacherName, setTeacherName] = useState("");
 
-
   // Getting Teacher Values from class
   const [classroomid, setclassroomid] = useState("");
 
@@ -90,7 +89,7 @@ const AssignClasssRoomToStudent = () => {
         toast.error(response?.data?.success);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message);
+      // toast.error(error.response?.data?.message);
       console.log(
         error.response?.data?.message || "An error occurred. Please try again."
       );
@@ -102,8 +101,7 @@ const AssignClasssRoomToStudent = () => {
 
   const HandleStudentChange = (e) => {
     const { value } = e.target;
-      setStudentid(value)
-    console.log(AssignStudentData?.Studenid);
+    setStudentid(value);
   };
 
   const getStudentById = async (Studentid) => {
@@ -126,7 +124,7 @@ const AssignClasssRoomToStudent = () => {
         toast.error(response?.data?.success);
       }
     } catch (error) {
-      toast.error(error.response?.data?.message);
+      // toast.error(error.response?.data?.message);
       console.log(
         error.response?.data?.message || "An error occurred. Please try again."
       );
@@ -151,17 +149,15 @@ const AssignClasssRoomToStudent = () => {
   }, [Studentid]);
 
   const [AssignStudentData, setAssignStudentData] = useState({
-    Studenid: '',
-    ClassRoomId: '',
-    TeacherName: '',
-    StudentAge: '',
-    StudentRollNo: '',
-    StudentEmail: '',
+    Studenid: "",
+    ClassRoomId: "",
+    TeacherName: "",
+    StudentAge: "",
+    StudentRollNo: "",
+    StudentEmail: "",
   });
 
-
-  const HandleAssignStudent = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
     setAssignStudentData({
       Studentid: Studentid,
       ClassRoomId: classroomid,
@@ -170,39 +166,49 @@ const AssignClasssRoomToStudent = () => {
       StudentRollNo: StudentDetails?.Rollno,
       StudentEmail: StudentDetails?.Email,
     });
+  }, [Studentid]);
 
-    console.log(AssignStudentData);
+  const HandleAssignStudent = async (e) => {
+    e.preventDefault();
 
+    // if (
+    //   AssignStudentData?.Studenid !== "" &&
+    //   AssignStudentData?.ClassRoomId !== ""
+    // ) {
     // const URL = `${import.meta.env.VITE_BACKEND_URL}`;
+    console.log(AssignStudentData);
+    console.log(AssignStudentData?.Studentid);
+    console.log(AssignStudentData?.ClassRoomId);
 
-    // try {
-    //   const response = await axios.post(
-    //     `${import.meta.env.VITE_BACKEND_URL}FullStack/LoginPrinciple`,
-    //     {
-    //       Email: PrincipleData?.Email,
-    //       Password: PrincipleData.Password,
-    //     },
-    //     {
-    //       withCredentials: true,
-    //     }
-    //   );
+    try {
+      const response = await axios.post(
+        `${
+          import.meta.env.VITE_BACKEND_URL
+        }FullStack/AssignStudentInsideClassRoom`,
+        {
+          studentId: AssignStudentData?.Studentid,
+          classroomId: AssignStudentData?.ClassRoomId,
+        }
+      );
 
-    //   if (response?.data?.success) {
-    //     toast.success(response?.data?.message);
-    //     localStorage.setItem("PrincipleToken", response.data.token);
-    //     nav("/v18/PrincipleDashBoard", {
-    //       state: response.data.token,
-    //     });
-    //   } else {
-    //     toast.error(response?.data?.success);
-    //   }
-    // } catch (error) {
-    //   toast.error(error.response?.data?.message);
-    //   console.log(
-    //     error.response?.data?.message || "An error occurred. Please try again."
-    //   );
+      if (response?.data?.success) {
+        toast.success(response?.data?.message);
+        console.log(response?.data);
+      } else {
+        toast.error(response?.data?.message);
+        console.log("2nd console" + response?.data);
+        console.log(response?.data);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.error);
+      console.log(error?.response);
+      console.log(
+        error.response?.data?.message || "An error occurred. Please try again."
+      );
+    }
     // }
   };
+
   return (
     <>
       <div className="overflow-y-scroll overflow-auto scrollbar">
@@ -399,8 +405,5 @@ const AssignClasssRoomToStudent = () => {
 };
 
 export default AssignClasssRoomToStudent;
-
-
-
 
 // Api Banana hai student ko add kar ne ke liye
