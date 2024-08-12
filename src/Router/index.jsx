@@ -73,11 +73,11 @@ const index = createBrowserRouter([
         path: "TeacherDashBoard",
         element: <TeacherHome />,
       },
-      {
-        path: "main",
-        element: <Mainentry />,
-      },
     ],
+  },
+  {
+    path: "",
+    element: <Mainentry />,
   },
 ]);
 
