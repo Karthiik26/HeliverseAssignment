@@ -15,7 +15,7 @@ const LoginTeacher = require('../Controllers/LoginTeacher');
 const GettingPrinciple = require('../Controllers/GetPrinciple');
 const CommonLogOut = require('../Controllers/CommonLogOut');
 
-
+const AssignStudentInsideClassRoom = require('../Controllers/AssignStudentInsideClassroom');
 const CreateClassRoom = require('../Controllers/CreateClassRoom');
 const ScheduleClassRoom = require('../Controllers/ScheduleClassRoom');
 const GetClassRoomById = require('../Controllers/GetClassRoomById');
@@ -40,8 +40,9 @@ Router.post("/LoginTeacher", LoginTeacher); //done done 2
 Router.get("/CommonLogOut", CommonLogOut); //done done done  3
 
 
-Router.get("/GetStudentById/:StudentId", GetStudentById);  //done
+Router.get("/GetStudentById/:StudentId", GetStudentById);  //done 
 Router.get("/GetClassRoomById/:classRoomId", GetClassRoomById);  //done
+Router.post("/AssignStudentInsideClassRoom", AssignStudentInsideClassRoom);  //done 
 Router.post("/ScheduleClassRoom/:id", ScheduleClassRoom);  //done 
 Router.post("/CreateClassRoom", CreateClassRoom);  //done done 2
 
