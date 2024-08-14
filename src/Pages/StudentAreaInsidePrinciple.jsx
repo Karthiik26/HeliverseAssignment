@@ -129,6 +129,9 @@ const StudentAreaInsidePrinciple = () => {
                   <th scope="col" className="px-6 py-3">
                     Age
                   </th>
+                  <th scope="col" className="px-6 py-3">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -144,6 +147,14 @@ const StudentAreaInsidePrinciple = () => {
                     <td className="px-6 py-4">{data?.Email}</td>
                     <td className="px-6 py-4">{data?.Rollno}</td>
                     <td className="px-6 py-4">{data?.Age}</td>
+                    <td className="px-6 py-4 flex gap-2">
+                      <div>
+                        <button>Edit</button>
+                      </div>
+                      <div>
+                        <button>Delete</button>
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>

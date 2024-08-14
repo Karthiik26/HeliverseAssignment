@@ -131,9 +131,9 @@ const AssignClasssRoomToStudent = () => {
     }
   };
 
-  console.log("classid" + classroomid);
-  console.log("Studentid" + Studentid);
-  console.log(StudentDetails);
+  // console.log("classid" + classroomid);
+  // console.log("Studentid" + Studentid);
+  // console.log(StudentDetails);
 
   useEffect(() => {
     GetALLClasssrooms();
@@ -170,12 +170,6 @@ const AssignClasssRoomToStudent = () => {
 
   const HandleAssignStudent = async (e) => {
     e.preventDefault();
-
-    // if (
-    //   AssignStudentData?.Studenid !== "" &&
-    //   AssignStudentData?.ClassRoomId !== ""
-    // ) {
-    // const URL = `${import.meta.env.VITE_BACKEND_URL}`;
     console.log(AssignStudentData);
     console.log(AssignStudentData?.Studentid);
     console.log(AssignStudentData?.ClassRoomId);
@@ -194,6 +188,7 @@ const AssignClasssRoomToStudent = () => {
       if (response?.data?.success) {
         toast.success(response?.data?.message);
         console.log(response?.data);
+        GettingStudentsInsideClassRoom();
       } else {
         toast.error(response?.data?.message);
         console.log("2nd console" + response?.data);
@@ -206,8 +201,36 @@ const AssignClasssRoomToStudent = () => {
         error.response?.data?.message || "An error occurred. Please try again."
       );
     }
-    // }
   };
+
+  const [SetStudentDataAfterSave, setSetStudentDataAfterSave] = useState([]);
+  // Fetch data using an of all classrooms
+  const GettingStudentsInsideClassRoom = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}FullStack/GetClassRooms`
+      );
+
+      if (response?.data?.success) {
+        console.log(response?.data);
+        setSetStudentDataAfterSave(response?.data?.data);
+      } else {
+        toast.error(response?.data?.message);
+        console.log("2nd console" + response?.data);
+        console.log(response?.data);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.error);
+      console.log(error?.response);
+      console.log(
+        error.response?.data?.message || "An error occurred. Please try again."
+      );
+    }
+  };
+
+  useEffect(() => {
+    GettingStudentsInsideClassRoom();
+  }, []);
 
   return (
     <>
@@ -252,16 +275,42 @@ const AssignClasssRoomToStudent = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr className="text-sm">
-                  <th className="px-5 py-4">1</th>
-                  <td className="px-6 py-4">10/08/24 Sun</td>
-                  <td className="px-6 py-4">Xth B</td>
-                  <td className="px-6 py-4">12:00</td>
-                  <td className="px-6 py-4">6:00</td>
-                  <td className="px-6 py-4">6</td>
-                </tr>
+                {SetStudentDataAfterSave.map((data, index) => (
+                  <tr className="text-md border-2 border-slate-500" key={index}>
+                    <td className="px-5 py-4">{index + 1}</td>
+                    <td className="px-6 py-4">
+                      {data?.ClassRoomSchedule?.map((schedule, i) => (
+                        <div className={"py-4 font-bold text-[20px]"} key={i}>
+                          {schedule?.date}
+                        </div>
+                      ))}
+                    </td>
+                    <td className="px-6 py-4">{data?.Name}</td>
+                    <td className="px-6 py-4">{data?.Teacher?.Name}</td>
+                    <td className="px-6 py-4">
+                      {data?.Students?.map((student, i) => (
+                        <div className={"py-4 font-bold"} key={i}>
+                          {student?.Name}
+                        </div>
+                      ))}
+                    </td>
+                    <td className="px-6 py-4">
+                      {data?.Students?.map((student, i) => (
+                        <div className={"py-4 font-bold"} key={i}>
+                          {student?.Rollno}
+                        </div>
+                      ))}
+                    </td>
+                  </tr>
+                ))}
               </tbody>
             </table>
+            {SetStudentDataAfterSave.length === 0 && (
+              <div className="m-20 p-20 text-center text-3xl text-green-700 font-extrabold tracking-wider">
+                No Students Assigned !!! <br />
+                Assign Students To ClassRoom
+              </div>
+            )}
           </div>
         </div>
       </div>

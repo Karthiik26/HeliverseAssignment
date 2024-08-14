@@ -18,7 +18,7 @@ const TeacherNavbar = ({ TeacherName }) => {
           if (response?.data?.success) {
             toast.success("Logout successful");
             localStorage.clear("TeacherToken");
-            nav("/v18/main");
+            nav("/");
           } else {
             console.error("Logout failed", response?.data?.message);
           }
@@ -63,13 +63,8 @@ const TeacherNavbar = ({ TeacherName }) => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to={""} class="text-gray-900   hover:underline">
-                  Your ClassRoom
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to={"/"} class="text-gray-900   hover:underline">
-                  Add Students
+                <NavLink to={"/v18/TeacherDashBoard/StudentList"} class="text-gray-900   hover:underline">
+                  Your Students List
                 </NavLink>
               </li>
             </ul>

@@ -202,7 +202,7 @@ const ClassRoomAreaInsidePrinciple = () => {
     <>
       <div className="overflow-y-scroll overflow-auto scrollbar">
         <div className="flex justify-between w-full py-4 bg-purple-300">
-          <div className="mx-10">Total : 50</div>
+          <div className="mx-10">Total : {gettingClassRoomSchema?.length}</div>
           <div className="text-right flex ">
             <button
               onClick={() => setClassName(true)}

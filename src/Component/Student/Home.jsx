@@ -49,7 +49,7 @@ const Home = () => {
           <>
             <div className="flex justify-center items-center flex-row gap-4 mt-20 font-serif font-bold text-center">
               <div>
-                <h1>
+                <h1 className="text-5xl my-10"  >
                 Welcome
                 </h1>
                 <h1>Your Name : {setStudentDetails?.Name}</h1>

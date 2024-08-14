@@ -25,7 +25,7 @@ const PrincipleNavbar = () => {
       if (response?.data?.success) {
         toast.success("Logout successful")
         localStorage.clear('PrincipleToken')
-        nav("/v18/principleLogin");
+        nav("/");
       } else {
         console.error("Logout failed", response?.data?.message);
       }

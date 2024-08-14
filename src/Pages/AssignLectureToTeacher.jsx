@@ -1,80 +1,123 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import "../App.css";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
+import axios from "axios";
 
 const AssignLectureToTeacher = () => {
+  // GetALL classrooms
+  const [gettingClassRoomSchema, setgettingClassRoomSchema] = useState([]);
+
+  const GetALLClasssrooms = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}FullStack/GetClassRooms`
+      );
+
+      if (response?.data?.success) {
+        console.log("classrooms" + response?.data);
+        setgettingClassRoomSchema(response?.data?.data);
+      } else {
+        toast.error(response?.data?.success);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message);
+      console.log(
+        error.response?.data?.message || "An error occurred. Please try again."
+      );
+    }
+  };
+
+  useEffect(() => {
+    GetALLClasssrooms();
+  }, []);
+
+  const HandleInputElement = (e) => {
+    const { name, value } = e.target;
+
+    setAssignLectureData((preve) => {
+      return {
+        ...preve,
+        [name]: value,
+      };
+    });
+  };
+
   const [AddLectures, setAddLectures] = useState(false);
 
   const [AssignLectureData, setAssignLectureData] = useState({
     ClassRoomId: "",
-    TeacherName: "",
     LectureStratTime: "",
     LectureEndTime: "",
     Date: "",
     Subject: "",
   });
 
-  const HandleInputIdChange = (e) => {
-    const { name, value } = e.target;
-
-    setAssignLectureData((Preve) => {
-      return {
-        ...Preve,
-        [name]: value,
-      };
-    });
-  };
-
-  const HandleInputElement = (e) => {
-    const { name, value } = e.target;
-
-    setAssignLectureData((Preve) => {
-      return {
-        ...Preve,
-        [name]: value,
-      };
-    });
-  };
-
   const nav = useNavigate();
 
   const HandleAssignLecture = async (e) => {
     e.preventDefault();
-
     console.log(AssignLectureData);
 
-    // const URL = `${import.meta.env.VITE_BACKEND_URL}`;
+    const URL = `${import.meta.env.VITE_BACKEND_URL}`;
 
-    // try {
-    //   const response = await axios.post(
-    //     `${import.meta.env.VITE_BACKEND_URL}FullStack/LoginPrinciple`,
-    //     {
-    //       Email: PrincipleData?.Email,
-    //       Password: PrincipleData.Password,
-    //     },
-    //     {
-    //       withCredentials: true,
-    //     }
-    //   );
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_URL}FullStack/AddLectureToSchedule`,
+        {
+          classroomId: AssignLectureData?.ClassRoomId,
+          startTime: AssignLectureData?.LectureStratTime,
+          endTime: AssignLectureData?.LectureEndTime,
+          lectureDetails: AssignLectureData?.Subject,
+          date: AssignLectureData?.Date,
+        }
+      );
 
-    //   if (response?.data?.success) {
-    //     toast.success(response?.data?.message);
-    //     localStorage.setItem("PrincipleToken", response.data.token);
-    //     nav("/v18/PrincipleDashBoard", {
-    //       state: response.data.token,
-    //     });
-    //   } else {
-    //     toast.error(response?.data?.success);
-    //   }
-    // } catch (error) {
-    //   toast.error(error.response?.data?.message);
-    //   console.log(
-    //     error.response?.data?.message || "An error occurred. Please try again."
-    //   );
-    // }
+      if (response?.data?.success) {
+        toast.success(response?.data?.message);
+        console.log(response?.data);
+        GettingStudentsInsideClassRoom()
+      } else {
+        toast.error(response?.data?.success);
+      }
+    } catch (error) {
+      toast.error(error.response?.data?.message);
+      console.log(
+        error.response?.data?.message || "An error occurred. Please try again."
+      );
+    }
   };
+
+  const [SetStudentDataAfterSave, setSetStudentDataAfterSave] = useState([]);
+  // Fetch data using an of all classrooms
+  const GettingStudentsInsideClassRoom = async () => {
+    try {
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}FullStack/GetClassRooms`
+      );
+
+      if (response?.data?.success) {
+        console.log(response?.data);
+        setSetStudentDataAfterSave(response?.data?.data);
+      } else {
+        toast.error(response?.data?.message);
+        console.log("2nd console" + response?.data);
+        console.log(response?.data);
+      }
+    } catch (error) {
+      toast.error(error?.response?.data?.error);
+      console.log(error?.response);
+      console.log(
+        error.response?.data?.message || "An error occurred. Please try again."
+      );
+    }
+  };
+
+  useEffect(() => {
+    GettingStudentsInsideClassRoom();
+  }, []);
 
   return (
     <>
@@ -94,46 +137,61 @@ const AssignLectureToTeacher = () => {
         <div>
           <div className="py-8 font-bold">All ClassRooms</div>
 
-          <div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
-            <table className="w-[1250px] text-sm text-left rtl:text-right">
-              <thead className="text-md text-gray-700 uppercase bg-gray-50">
+          {SetStudentDataAfterSave.map((data, index) => (
+            <div className=" overflow-x-auto shadow-lg sm:rounded-lg">
+              <div className="text-md m-2 py-4 flex justify-center gap-4 text-gray-700 text-center uppercase bg-gray-50">
                 <tr>
-                  <th scope="col" className="px-5 py-3">
-                    Sr No
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Date
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    ClassRoom Name
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Teacher Name
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Lecture Start Time
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Lectures End Time
-                  </th>
-                  <th scope="col" className="px-6 py-3">
-                    Subject
-                  </th>
+                  <th>Class Name : {data?.Name}</th>
                 </tr>
-              </thead>
-              <tbody>
-                <tr className="text-sm">
-                  <th className="px-5 py-4">1</th>
-                  <td className="px-6 py-4">10/08/24 Sun</td>
-                  <td className="px-6 py-4">Xth B</td>
-                  <td className="px-6 py-4">12:00</td>
-                  <td className="px-6 py-4">6:00</td>
-                  <td className="px-6 py-4">6</td>
-                  <td className="px-6 py-4">50</td>
+                <tr>
+                  <th>Teacher Name : {data?.Teacher?.Name} </th>
                 </tr>
-              </tbody>
-            </table>
-          </div>
+              </div>
+              {data?.ClassRoomSchedule?.map((lecture, index) => (
+                <>
+                  <div className="text-md m-2 py-4 flex justify-center gap-4 text-gray-700 text-center uppercase bg-gray-50">
+                    <tr>
+                      <th>
+                        ClassRoom Time : From {lecture?.startTime} - To{" "}
+                        {lecture?.endTime}
+                      </th>
+                    </tr>
+                    <tr>
+                      <th>ClassRoom Date : {lecture?.date}</th>
+                    </tr>
+                  </div>
+                  <table className="w-[1250px] text-sm text-left rtl:text-right">
+                    <thead className="text-md text-gray-700 uppercase bg-gray-50">
+                      <tr>
+                        <th scope="col" className="px-5 py-3">
+                          Sr No
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Start Time
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          End Time
+                        </th>
+                        <th scope="col" className="px-6 py-3">
+                          Subject
+                        </th>
+                      </tr>
+                    </thead>
+                    {lecture?.Lectures?.map((time, index) => (
+                      <tbody>
+                        <tr className="text-sm">
+                          <th className="px-5 py-4">{index + 1}</th>
+                          <td className="px-6 py-4">{time?.startTime}</td>
+                          <td className="px-6 py-4">{time?.endTime}</td>
+                          <td className="px-6 py-4">{time?.Subject}</td>
+                        </tr>
+                      </tbody>
+                    ))}
+                  </table>
+                </>
+              ))}
+            </div>
+          ))}
         </div>
       </div>
 
@@ -144,7 +202,7 @@ const AssignLectureToTeacher = () => {
             <button className="m-4" onClick={() => setAddLectures(false)}>
               <IoMdArrowRoundBack size={28} />
             </button>
-            <form onSubmit={HandleAssignLecture} >
+            <form onSubmit={HandleAssignLecture}>
               <div className="flex justify-around flex-row items-center mx-20">
                 {/* 1 */}
                 <div className="flex flex-col justify-center items-center gap-8">
@@ -156,31 +214,16 @@ const AssignLectureToTeacher = () => {
                       name="ClassRoomId"
                       id="ClassName"
                       value={AssignLectureData?.ClassRoomId}
-                      onChange={HandleInputIdChange}
+                      onChange={HandleInputElement}
                       className="border-2 border-black rounded-md w-56 text-lg p-2"
                     >
                       <option value="1">Select One</option>
-                      <option value="2">Teacher1</option>
-                      <option value="3">Teacher1</option>
+                      {gettingClassRoomSchema.map((data, index) => (
+                        <option key={data?._id} value={data?._id}>
+                          {data?.Name}
+                        </option>
+                      ))}
                     </select>
-                  </div>
-
-                  <div className="flex flex-col gap-4">
-                    <label
-                      htmlFor="SelectTeacher"
-                      className="text-lg font-bold"
-                    >
-                      Select Teacher
-                    </label>
-                    <input
-                      type="text"
-                      className="border-2 border-black rounded-md w-56 text-lg p-2"
-                      name="TeacherName"
-                      value={AssignLectureData?.TeacherName}
-                      onChange={HandleInputElement} 
-                      id="SelectTeacher"
-                      readOnly
-                    />
                   </div>
 
                   <div className="flex flex-col gap-4">
@@ -191,7 +234,7 @@ const AssignLectureToTeacher = () => {
                       type="time"
                       name="LectureStratTime"
                       value={AssignLectureData?.LectureStratTime}
-                      onChange={HandleInputElement} 
+                      onChange={HandleInputElement}
                       id="Time"
                       className="border-2 border-black rounded-md w-56 text-lg p-2"
                     />
@@ -208,7 +251,7 @@ const AssignLectureToTeacher = () => {
                       type="time"
                       name="LectureEndTime"
                       value={AssignLectureData?.LectureEndTime}
-                      onChange={HandleInputElement} 
+                      onChange={HandleInputElement}
                       id="EndTime"
                       className="border-2 border-black rounded-md w-56 text-lg p-2"
                     />
@@ -222,7 +265,7 @@ const AssignLectureToTeacher = () => {
                       type="date"
                       name="Date"
                       value={AssignLectureData?.Date}
-                      onChange={HandleInputElement} 
+                      onChange={HandleInputElement}
                       id="Date"
                       className="border-2 border-black rounded-md w-56 text-lg p-2"
                     />
@@ -236,7 +279,7 @@ const AssignLectureToTeacher = () => {
                       type="text"
                       name="Subject"
                       value={AssignLectureData?.Subject}
-                      onChange={HandleInputElement} 
+                      onChange={HandleInputElement}
                       id="Subject"
                       className="border-2 border-black rounded-md w-56 text-lg p-2"
                     />
@@ -244,7 +287,10 @@ const AssignLectureToTeacher = () => {
                 </div>
               </div>
               <div className="flex justify-center items-center mt-6">
-                <button type="submit" className={"bg-yellow-200 py-4 px-3 font-bold"}>
+                <button
+                  type="submit"
+                  className={"bg-yellow-200 py-4 px-3 font-bold"}
+                >
                   Assign Lecture
                 </button>
               </div>

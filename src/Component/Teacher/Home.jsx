@@ -37,6 +37,38 @@ const Home = () => {
     GetTeacherByToken();
   }, [TeacherToken]);
 
+
+  const [HandlingAllDataOfTeacher, setHandlingAllDataOfTeacher] = useState([]);
+
+
+  const GettingStudentList = async () => {
+    try {
+      if (!setTeacherDetails?._id) retun;
+
+      const URL = `${
+        import.meta.env.VITE_BACKEND_URL
+      }FullStack/getClassRoomByTeacherId/${setTeacherDetails?._id.toString()}`;
+
+      const response = await axios.get(URL);
+
+      if (response?.data?.success) {
+        console.log(response?.data);
+        setHandlingAllDataOfTeacher(response?.data?.data)
+      } else {
+        console.error("Logout failed", response?.data?.message);
+      }
+    } catch (error) {
+      console.error("An error occurred during logout", error.message || error);
+    }
+  };
+
+  useEffect(() => {
+    if (setTeacherDetails?._id) {
+      GettingStudentList();
+    }
+  }, [setTeacherDetails?._id]);
+
+
   return (
     <>
       <section className={`bg-gray-100`}>
@@ -54,7 +86,7 @@ const Home = () => {
           </div>
             <div className="flex justify-center items-center flex-row gap-4 mt-20 font-serif font-bold text-center">
               <div className="w-80 h-32 rounded-lg border-2 border-black bg-green-200 flex justify-center items-center gap-4">
-                <div>50 </div>
+                <div> {HandlingAllDataOfTeacher[0]?.Students?.length} </div>
 
                 <div>No Of Students In Your Class</div>
               </div>

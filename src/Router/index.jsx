@@ -15,6 +15,8 @@ import TeacherAreaInsidePrinciple from "../Pages/TeacherAreaInsidePrinciple";
 import ClassRoomAreaInsidePrinciple from "../Pages/ClassRoomAreaInsidePrinciple";
 import AssignClasssRoomToStudent from "../Pages/AssignClasssRoomToStudent";
 import AssignLectureToTeacher from "../Pages/AssignLectureToTeacher";
+import YourClassMates from "../Component/Student/YourClassMates";
+import StudentList from "../Component/Teacher/StudentList";
 
 const index = createBrowserRouter([
   {
@@ -52,26 +54,29 @@ const index = createBrowserRouter([
           },
         ],
       },
-      ,
-      // {
-      //     path : 'StudentRegister',
-      //     element : <StudentRegister />
-      // },
-      // {
-      //     path : 'TeacherRegister',
-      //     element : <TeacherRegister />
-      // }
+
       // Student
       {
         path: "StudentHome",
         element: <StudentHome />,
+        children: [
+          {
+            path: "YourClassMates",
+            element: <YourClassMates />,
+          },
+        ],
       },
 
       // Teacher
-
       {
         path: "TeacherDashBoard",
         element: <TeacherHome />,
+        children: [
+          {
+            path: "StudentList",
+            element: <StudentList />,
+          },
+        ],
       },
     ],
   },

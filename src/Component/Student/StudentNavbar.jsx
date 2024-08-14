@@ -19,7 +19,7 @@ const StudentNavbar = ({ data }) => {
       if (response?.data?.success) {
         toast.success("Logout successful");
         localStorage.clear("StudentToken");
-        nav("/v18/main");
+        nav("/");
       } else {
         console.error("Logout failed", response?.data?.message);
       }
@@ -62,13 +62,8 @@ const StudentNavbar = ({ data }) => {
                 </NavLink>
               </li>
               <li>
-                <NavLink to={"/"} class="text-gray-900   hover:underline">
+                <NavLink to={"/v18/StudentHome/YourClassMates"} class="text-gray-900   hover:underline">
                   Your ClassMates
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to={""} class="text-gray-900   hover:underline">
-                  Your ClassRoom
                 </NavLink>
               </li>
             </ul>

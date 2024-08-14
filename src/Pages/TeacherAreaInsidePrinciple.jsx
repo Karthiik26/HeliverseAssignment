@@ -94,7 +94,7 @@ const TeacherAreaInsidePrinciple = () => {
     <>
       <div className="overflow-y-scroll overflow-auto scrollbar">
         <div className="flex justify-between w-full py-4 bg-yellow-200">
-          <div className="mx-10">Total : {TeacherApiData.length }</div>
+          <div className="mx-10">Total : {TeacherApiData.length}</div>
           <div className="text-right">
             <button
               onClick={() => setCreatTeacher(true)}
@@ -121,25 +121,35 @@ const TeacherAreaInsidePrinciple = () => {
                   <th scope="col" className="px-6 py-3">
                     Email
                   </th>
+                  <th scope="col" className="px-6 py-3">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {TeacherApiData.map((data,index) => (
+                {TeacherApiData.map((data, index) => (
                   <tr key={index} className="text-sm">
-                    <th className="px-5 py-4">{index+1}</th>
+                    <th className="px-5 py-4">{index + 1}</th>
                     <td className="px-6 py-4">{data?.Name}</td>
                     <td className="px-6 py-4">{data.Email}</td>
+                    <td className="px-6 py-4 flex gap-2">
+                      <div>
+                        <button>Edit</button>
+                      </div>
+                      <div>
+                        <button>Delete</button>
+                      </div>
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
-            {
-                  TeacherApiData.length === 0 &&(
-                    <div className="m-20 p-20 text-center text-3xl text-red-700 font-extrabold tracking-wider" >
-                      No Teacher Found !!! <br />Add Teacher
-                    </div>
-                  )
-                }
+            {TeacherApiData.length === 0 && (
+              <div className="m-20 p-20 text-center text-3xl text-red-700 font-extrabold tracking-wider">
+                No Teacher Found !!! <br />
+                Add Teacher
+              </div>
+            )}
           </div>
         </div>
       </div>
