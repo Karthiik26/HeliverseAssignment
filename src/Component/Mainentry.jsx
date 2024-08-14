@@ -24,13 +24,13 @@ const Mainentry = () => {
   return (
     <>
       <div className="flex justify-between mx-32 my-20">
-        <div className="mr-32">Welcome To Our School</div>
+        <div className="mr-32 text-7xl font-bold tracking-widest mt-28">Welcome To Our School</div>
         {/* <div className="flex justify-center items-center m-20"> */}
-        <div className="flex flex-col justify-center items-center ml-32 ">
+        <div className="flex flex-col justify-center items-center ml-32 text-xl">
           <div className="py-8">
             <button
               onClick={toprincipal}
-              className="px-5 py-3 bg-red-400 text-black font-bold text-lg"
+              className="px-5 py-3 bg-red-400 text-white font-bold text-lg"
             >
               Principal
             </button>
