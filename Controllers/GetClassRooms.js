@@ -2,7 +2,10 @@ const ClassRoomSchema = require("../Models/ClassRoomSchema");
 
 const GettingAllClassRooms = async (req, res) => {
   try {
-    const AllClassRooms = await ClassRoomSchema.find().populate("Teacher");
+    const AllClassRooms = await ClassRoomSchema.find()
+      .populate("Students", "Name Email Rollno Age")
+      .populate("Teacher", "Name Email");
+
     return res.status(201).json({
       message: "Geting All Teachers Succesfully",
       data: AllClassRooms,

@@ -16,7 +16,7 @@ const TeacherSchema = new mongoose.Schema(
       type: String,
       required: [true, "Provide Password"],
     },
-    ClassroomId: []
+    ClassroomId: [],
   },
   {
     timestamps: true,

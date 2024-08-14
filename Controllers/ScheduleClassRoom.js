@@ -6,21 +6,18 @@ const ScheduleClassRoom = async (req, res) => {
   const { startTime, endTime, date, teacherId } = req.body;
 
   try {
-    // Check if the classroom exists
     const classroom = await ClassRoom.findById(id).populate("Teacher");
 
     if (!classroom) {
       return res.status(404).json({ message: "Classroom not found" });
     }
 
-    // Check if the provided teacherId matches the teacher in the classroom
     if (classroom.Teacher._id.toString() !== teacherId) {
       return res
         .status(403)
         .json({ message: "Teacher does not belong to this classroom" });
     }
 
-    // Convert date to day using moment
     const dayOfWeek = moment(date).format("dddd");
 
     const currentDate = moment().startOf("day");
@@ -32,7 +29,6 @@ const ScheduleClassRoom = async (req, res) => {
         .json({ message: "Cannot schedule for a past date", success: false });
     }
 
-    // Check if the date is already in the schedule
     const isDateRepeated = classroom.ClassRoomSchedule.some((schedule) =>
       moment(schedule.date, "YYYY-MM-DD").isSame(date, "day")
     );
@@ -43,17 +39,14 @@ const ScheduleClassRoom = async (req, res) => {
         .json({ message: "Schedule for this date already exists" });
     }
 
-    // Create the schedule entry
     const scheduleEntry = {
       startTime,
       endTime,
       date: `${date} (${dayOfWeek})`,
     };
 
-    // Push the schedule entry to the ClassRoomSchedule array
     classroom.ClassRoomSchedule.push(scheduleEntry);
 
-    // Save the updated classroom document
     await classroom.save();
 
     res.status(200).json({

@@ -2,15 +2,23 @@ const StudentSchema = require("../Models/StudentSchema");
 
 const EditStudent = async (req, res) => {
   try {
-    const { StudentId, Name, Rollno, Age, Password } = req.body;
+    const { StudentId, Name, Rollno, Age, Email } = req.body;
+
+    const CheckEmail = await StudentSchema.findOne({Email});
+    if (CheckEmail) {
+      return res
+        .status(400)
+        .json({
+          message: "The EmailId Already Exist.",
+        });
+    }
 
     const UpdateStudent = await StudentSchema.updateOne(
       { _id: StudentId },
       {
         Name: Name,
         Rollno: Rollno,
-        Age: Age,
-        Password: Password,
+        Age: Age
       }
     );
 

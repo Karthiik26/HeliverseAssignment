@@ -11,11 +11,7 @@ const GettingTeacherClassRoom = async (req, res) => {
       data: Teachers,
       success: true,
     });
-    
-
-    // teacher milega teacher ke under classroom ka id ke base pe fetch kar na hai
-
-    
+     
 
   } catch (error) {
     return res.status(500).json({

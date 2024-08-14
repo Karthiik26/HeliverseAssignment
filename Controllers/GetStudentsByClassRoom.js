@@ -26,7 +26,6 @@ const GettingStudentClassRoom = async (req, res) => {
       success: true,
     });
 
-    // Fetch classroom details based on the Student ID, if necessary
 
   } catch (error) {
     return res.status(500).json({

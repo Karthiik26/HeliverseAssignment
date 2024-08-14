@@ -1,14 +1,32 @@
 const StudentSchema = require("../Models/StudentSchema");
+const ClassRoom = require("../Models/ClassRoomSchema");
 
 const DeleteStudent = async (req, res) => {
   try {
-    const { StudentId } = req.body;
+    const { StudentId } = req.params;
 
-    const UpdateStudent = await StudentSchema.findByIdAndDelete(StudentId);
+    const student = await StudentSchema.findByIdAndDelete(StudentId);
 
-    if (UpdateStudent) {
+    if (!student) {
+      return res.status(404).json({
+        message: "Student not found",
+        success: false,
+      });
+    }
+
+    const updateClassrooms = await ClassRoom.updateMany(
+      { Students: StudentId },
+      { $pull: { Students: StudentId } }
+    );
+
+    if (updateClassrooms.modifiedCount > 0) {
       return res.status(200).json({
-        message: "Student Deleted Successfully",
+        message: "Student deleted and removed from classrooms successfully",
+        success: true,
+      });
+    } else {
+      return res.status(200).json({
+        message: "Student deleted, but was not found in any classrooms",
         success: true,
       });
     }

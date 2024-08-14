@@ -13,7 +13,6 @@ const RegisterStudent = async (req, res) => {
       });
     }
 
-    // Hash the password
     const salt = await bcryptjs.genSalt(10);
     const hashPassword = await bcryptjs.hash(Password, salt);
 
